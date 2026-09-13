@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Your Name — developer</title>
+<meta name="description" content="Backend engineer. Go, Python, Postgres. Building payment and developer tooling." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* ---------- tokens ---------- */
+:root{
+  --ink:#16182E;
+  --paper:#EFF1F6;
+  --surface:#FFFFFF;
+  --violet:#5B3DF5;
+  --amber:#F5A524;
+  --moss:#0F9D8F;
+  --muted:#6B7089;
+  --rule:rgba(22,24,46,.14);
+  --cell:rgba(22,24,46,.07);
+
+  --display:"Bricolage Grotesque",Georgia,serif;
+  --body:"IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+
+  --shell:min(1180px,100% - 3rem);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --ink:#EEF0F8;
+    --paper:#101223;
+    --surface:#181B30;
+    --violet:#9A86FF;
+    --amber:#FFC65C;
+    --moss:#4DD6C3;
+    --muted:#9AA0BD;
+    --rule:rgba(238,240,248,.16);
+    --cell:rgba(238,240,248,.08);
+  }
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:1.0625rem;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;}
+img{max-width:100%;display:block;}
+:focus-visible{outline:3px solid var(--violet);outline-offset:3px;border-radius:2px;}
+
+.shell{width:var(--shell);margin-inline:auto;}
+
+/* ---------- hero ---------- */
+.masthead{padding-block:clamp(3.5rem,9vw,7rem) 2rem;}
+.masthead__eyebrow{
+  font-family:var(--mono);
+  font-size:.8125rem;
+  color:var(--muted);
+  margin:0 0 1.25rem;
+}
+.masthead__eyebrow b{color:var(--moss);font-weight:500;}
+.masthead__name{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:clamp(3rem,12vw,8.5rem);
+  line-height:.88;
+  letter-spacing:-.04em;
+  margin:0;
+}
+.masthead__line{
+  max-width:34ch;
+  font-size:clamp(1.125rem,2.4vw,1.4rem);
+  line-height:1.45;
+  margin:1.75rem 0 0;
+}
+.masthead__line em{font-style:normal;border-bottom:2px solid var(--amber);}
+
+/* ---------- contribution band (the one big moment) ---------- */
+.band{
+  padding-block:clamp(2.5rem,6vw,4rem);
+  border-block:1px solid var(--rule);
+  margin-block:clamp(2.5rem,6vw,4rem);
+  overflow-x:auto;
+  scrollbar-width:thin;
+}
+.grid{
+  display:grid;
+  grid-auto-flow:column;
+  grid-template-rows:repeat(7,1fr);
+  gap:3px;
+  min-width:640px;
+}
+.grid i{
+  aspect-ratio:1;
+  border-radius:2px;
+  background:var(--cell);
+  opacity:0;
+  transform:scale(.4);
+  animation:pop .45s cubic-bezier(.2,.9,.3,1.4) forwards;
+}
+.grid i[data-l="1"]{background:color-mix(in srgb,var(--moss) 35%,var(--cell));}
+.grid i[data-l="2"]{background:color-mix(in srgb,var(--moss) 65%,transparent);}
+.grid i[data-l="3"]{background:var(--violet);}
+@keyframes pop{to{opacity:1;transform:none;}}
+.band__foot{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.5rem 1.5rem;
+  justify-content:space-between;
+  font-family:var(--mono);
+  font-size:.8125rem;
+  color:var(--muted);
+  margin-top:1.25rem;
+}
+
+/* ---------- body layout ---------- */
+.spread{
+  display:grid;
+  grid-template-columns:minmax(0,15rem) minmax(0,1fr);
+  gap:clamp(2rem,6vw,5rem);
+  padding-bottom:5rem;
+  align-items:start;
+}
+@media (max-width:860px){
+  .spread{grid-template-columns:1fr;}
+}
+
+.rail{position:sticky;top:2.5rem;}
+@media (max-width:860px){.rail{position:static;}}
+.rail h2,.block h2{
+  font-family:var(--display);
+  font-weight:600;
+  font-size:1.0625rem;
+  letter-spacing:-.01em;
+  margin:0 0 .75rem;
+  padding-bottom:.5rem;
+  border-bottom:1px solid var(--rule);
+}
+.rail ul{list-style:none;margin:0 0 2.25rem;padding:0;}
+.rail li{padding:.3rem 0;font-size:.95rem;}
+.rail a{
+  text-decoration:none;
+  display:inline-flex;
+  gap:.5rem;
+  align-items:baseline;
+  border-bottom:1px solid transparent;
+}
+.rail a:hover{border-bottom-color:var(--violet);color:var(--violet);}
+.rail a span{font-family:var(--mono);font-size:.75rem;color:var(--muted);}
+
+.block{margin-bottom:clamp(2.5rem,6vw,4rem);}
+.block > p{max-width:62ch;margin:0 0 1rem;}
+
+/* ---------- work list, not cards ---------- */
+.work{list-style:none;margin:0;padding:0;}
+.work li{border-bottom:1px solid var(--rule);}
+.work a{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:.35rem 1.5rem;
+  align-items:baseline;
+  padding:1.15rem 0;
+  text-decoration:none;
+}
+.work a:hover .work__name{color:var(--violet);}
+.work__name{
+  font-family:var(--display);
+  font-weight:600;
+  font-size:1.35rem;
+  letter-spacing:-.02em;
+  transition:color .18s ease;
+}
+.work__meta{
+  grid-column:1/-1;
+  max-width:60ch;
+  color:var(--muted);
+  font-size:.95rem;
+}
+.work__tags{
+  font-family:var(--mono);
+  font-size:.75rem;
+  color:var(--muted);
+  white-space:nowrap;
+}
+@media (max-width:600px){
+  .work a{grid-template-columns:1fr;}
+  .work__tags{white-space:normal;}
+}
+
+/* ---------- stat strip ---------- */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(8rem,1fr));
+  gap:1.5rem;
+  margin:0;
+}
+.stats div{border-left:2px solid var(--violet);padding-left:.9rem;}
+.stats dt{font-family:var(--mono);font-size:.75rem;color:var(--muted);}
+.stats dd{
+  font-family:var(--display);
+  font-weight:600;
+  font-size:2rem;
+  letter-spacing:-.03em;
+  margin:.1rem 0 0;
+}
+
+/* ---------- footer ---------- */
+.foot{
+  border-top:1px solid var(--rule);
+  padding-block:2rem 3.5rem;
+  font-family:var(--mono);
+  font-size:.8125rem;
+  color:var(--muted);
+  display:flex;
+  flex-wrap:wrap;
+  gap:.5rem 1.5rem;
+  justify-content:space-between;
+}
+
+@media (prefers-reduced-motion:reduce){
+  .grid i{animation:none;opacity:1;transform:none;}
+  *{transition-duration:.01ms !important;}
+}
+</style>
+</head>
+
+<body>
+
+<header class="masthead shell">
+  <p class="masthead__eyebrow"><b>●</b> available for work — Nairobi / remote</p>
+  <h1 class="masthead__name">Your<br />Name</h1>
+  <p class="masthead__line">I build backend systems that move money without <em>losing any of it</em>. Mostly Go and Postgres, occasionally against my better judgement.</p>
+</header>
+
+<section class="band shell" aria-label="Contribution activity">
+  <div class="grid" id="grid" aria-hidden="true"></div>
+  <p class="band__foot">
+    <span>371 days · 1,284 contributions</span>
+    <span>longest streak 46 days</span>
+  </p>
+</section>
+
+<main class="spread shell">
+
+  <aside class="rail">
+    <h2>Elsewhere</h2>
+    <ul>
+      <li><a href="https://github.com/YOUR-USERNAME">GitHub <span>@YOUR-USERNAME</span></a></li>
+      <li><a href="https://linkedin.com/in/YOUR-HANDLE">LinkedIn <span>/in/YOUR-HANDLE</span></a></li>
+      <li><a href="mailto:you@example.com">Email <span>you@example.com</span></a></li>
+      <li><a href="/cv.pdf">CV <span>pdf, 82kb</span></a></li>
+    </ul>
+
+    <h2>Working with</h2>
+    <ul>
+      <li>Go, Python, TypeScript</li>
+      <li>Postgres, Redis, NATS</li>
+      <li>Docker, Kubernetes, AWS</li>
+      <li>Learning: Rust</li>
+    </ul>
+  </aside>
+
+  <div>
+    <section class="block">
+      <h2>About</h2>
+      <p>I spend most of my time on payment infrastructure — the unglamorous parts, like reconciliation, idempotency and what happens when a provider returns a 200 for a transaction that never settled.</p>
+      <p>Before that I wrote Django for a logistics company and learned that the database is almost always the problem. I write about the things that break, and I answer email.</p>
+    </section>
+
+    <section class="block">
+      <h2>Selected work</h2>
+      <ul class="work">
+        <li>
+          <a href="https://github.com/YOUR-USERNAME/ledger-sync">
+            <span class="work__name">ledger-sync</span>
+            <span class="work__tags">Go · Postgres · NATS</span>
+            <span class="work__meta">Reconciles payment events from three providers into a single ledger. Handles about two million events a day without manual intervention.</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/YOUR-USERNAME/tinyquery">
+            <span class="work__name">tinyquery</span>
+            <span class="work__tags">Rust · zero deps</span>
+            <span class="work__meta">A teaching SQL engine — lexer, parser, planner and executor in under three thousand lines, written to understand how the real ones work.</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/YOUR-USERNAME/ci-warden">
+            <span class="work__name">ci-warden</span>
+            <span class="work__tags">Python · Actions</span>
+            <span class="work__meta">Watches retry patterns across CI runs and flags tests that only pass on the second try.</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/YOUR-USERNAME/dotfiles">
+            <span class="work__name">dotfiles</span>
+            <span class="work__tags">Shell · Lua</span>
+            <span class="work__meta">Neovim, zsh and tmux configuration. Bootstraps a fresh machine with one command.</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="block">
+      <h2>By the numbers</h2>
+      <dl class="stats">
+        <div><dt>public repos</dt><dd>41</dd></div>
+        <div><dt>merged PRs</dt><dd>318</dd></div>
+        <div><dt>stars earned</dt><dd>2.1k</dd></div>
+        <div><dt>years shipping</dt><dd>6</dd></div>
+      </dl>
+    </section>
+  </div>
+
+</main>
+
+<footer class="foot shell">
+  <span>Built by hand. Hosted on GitHub Pages.</span>
+  <span>© 2026</span>
+</footer>
+
+<script>
+// Draws 53 weeks of contribution cells and fills them in once, on load.
+(function () {
+  var grid = document.getElementById("grid");
+  var total = 53 * 7;
+  var frag = document.createDocumentFragment();
+  for (var i = 0; i < total; i++) {
+    var cell = document.createElement("i");
+    var r = Math.random();
+    var level = r > 0.92 ? 3 : r > 0.72 ? 2 : r > 0.45 ? 1 : 0;
+    if (level) cell.dataset.l = level;
+    cell.style.animationDelay = (i * 3) + "ms";
+    frag.appendChild(cell);
+  }
+  grid.appendChild(frag);
+})();
+</script>
+
+</body>
+</html>
