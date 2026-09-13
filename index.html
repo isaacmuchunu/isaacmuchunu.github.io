@@ -21,6 +21,8 @@
   --muted:#6B7089;
   --rule:rgba(22,24,46,.14);
   --cell:rgba(22,24,46,.07);
+  --glow-violet:rgba(91,61,245,.12);
+  --glow-moss:rgba(15,157,143,.12);
 
   --display:"Bricolage Grotesque",Georgia,serif;
   --body:"IBM Plex Sans",system-ui,sans-serif;
@@ -31,14 +33,16 @@
 @media (prefers-color-scheme:dark){
   :root{
     --ink:#EEF0F8;
-    --paper:#101223;
-    --surface:#181B30;
-    --violet:#9A86FF;
-    --amber:#FFC65C;
-    --moss:#4DD6C3;
+    --paper:#0A0E1A;
+    --surface:#141829;
+    --violet:#A99DFF;
+    --amber:#FFD180;
+    --moss:#5AE5D0;
     --muted:#9AA0BD;
-    --rule:rgba(238,240,248,.16);
-    --cell:rgba(238,240,248,.08);
+    --rule:rgba(238,240,248,.12);
+    --cell:rgba(238,240,248,.06);
+    --glow-violet:rgba(169,157,255,.16);
+    --glow-moss:rgba(90,229,208,.12);
   }
 }
 
@@ -52,22 +56,42 @@ body{
   font-size:1.0625rem;
   line-height:1.65;
   -webkit-font-smoothing:antialiased;
+  transition:background-color .3s ease,color .3s ease;
 }
-a{color:inherit;}
+a{color:inherit;transition:color .18s ease;}
 img{max-width:100%;display:block;}
 :focus-visible{outline:3px solid var(--violet);outline-offset:3px;border-radius:2px;}
 
 .shell{width:var(--shell);margin-inline:auto;}
 
 /* ---------- hero ---------- */
-.masthead{padding-block:clamp(3.5rem,9vw,7rem) 2rem;}
+.masthead{padding-block:clamp(3.5rem,9vw,7rem) 2rem;position:relative;}
+.masthead::after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:-400px;
+  width:600px;
+  height:300px;
+  background:radial-gradient(circle,var(--glow-violet) 0%,transparent 70%);
+  pointer-events:none;
+  opacity:.6;
+}
 .masthead__eyebrow{
   font-family:var(--mono);
   font-size:.8125rem;
   color:var(--muted);
   margin:0 0 1.25rem;
+  text-transform:uppercase;
+  letter-spacing:.05em;
 }
-.masthead__eyebrow b{color:var(--moss);font-weight:500;}
+.masthead__eyebrow b{
+  color:var(--moss);
+  font-weight:600;
+  display:inline-block;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;} 50%{opacity:.6;}}
 .masthead__name{
   font-family:var(--display);
   font-weight:800;
@@ -75,14 +99,26 @@ img{max-width:100%;display:block;}
   line-height:.88;
   letter-spacing:-.04em;
   margin:0;
+  background:linear-gradient(135deg,var(--ink) 0%,var(--violet) 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
 }
 .masthead__line{
   max-width:34ch;
   font-size:clamp(1.125rem,2.4vw,1.4rem);
   line-height:1.45;
   margin:1.75rem 0 0;
+  color:var(--ink);
 }
-.masthead__line em{font-style:normal;border-bottom:2px solid var(--amber);}
+.masthead__line em{
+  font-style:normal;
+  background:linear-gradient(90deg,var(--amber),var(--violet));
+  padding:0 .2em;
+  border-radius:2px;
+  color:var(--surface);
+  font-weight:600;
+}
 
 /* ---------- contribution band (the one big moment) ---------- */
 .band{
@@ -91,6 +127,8 @@ img{max-width:100%;display:block;}
   margin-block:clamp(2.5rem,6vw,4rem);
   overflow-x:auto;
   scrollbar-width:thin;
+  background:radial-gradient(circle at center,var(--glow-moss) 0%,transparent 100%);
+  border-radius:12px;
 }
 .grid{
   display:grid;
@@ -101,12 +139,15 @@ img{max-width:100%;display:block;}
 }
 .grid i{
   aspect-ratio:1;
-  border-radius:2px;
+  border-radius:3px;
   background:var(--cell);
   opacity:0;
   transform:scale(.4);
   animation:pop .45s cubic-bezier(.2,.9,.3,1.4) forwards;
+  cursor:pointer;
+  transition:transform .2s ease,box-shadow .2s ease;
 }
+.grid i:hover{transform:scale(1.1);box-shadow:0 0 12px var(--glow-moss);}
 .grid i[data-l="1"]{background:color-mix(in srgb,var(--moss) 35%,var(--cell));}
 .grid i[data-l="2"]{background:color-mix(in srgb,var(--moss) 65%,transparent);}
 .grid i[data-l="3"]{background:var(--violet);}
@@ -143,7 +184,8 @@ img{max-width:100%;display:block;}
   letter-spacing:-.01em;
   margin:0 0 .75rem;
   padding-bottom:.5rem;
-  border-bottom:1px solid var(--rule);
+  border-bottom:2px solid var(--rule);
+  transition:border-color .2s ease;
 }
 .rail ul{list-style:none;margin:0 0 2.25rem;padding:0;}
 .rail li{padding:.3rem 0;font-size:.95rem;}
@@ -153,46 +195,71 @@ img{max-width:100%;display:block;}
   gap:.5rem;
   align-items:baseline;
   border-bottom:1px solid transparent;
+  transition:all .2s ease;
 }
-.rail a:hover{border-bottom-color:var(--violet);color:var(--violet);}
+.rail a:hover{
+  border-bottom-color:var(--violet);
+  color:var(--violet);
+  transform:translateX(4px);
+}
 .rail a span{font-family:var(--mono);font-size:.75rem;color:var(--muted);}
 
 .block{margin-bottom:clamp(2.5rem,6vw,4rem);}
-.block > p{max-width:62ch;margin:0 0 1rem;}
+.block > p{max-width:62ch;margin:0 0 1rem;color:var(--muted);}
 
 /* ---------- work list, not cards ---------- */
 .work{list-style:none;margin:0;padding:0;}
-.work li{border-bottom:1px solid var(--rule);}
+.work li{
+  border-bottom:1px solid var(--rule);
+  transition:background .2s ease;
+}
+.work li:hover{background:var(--glow-violet);}
 .work a{
   display:grid;
   grid-template-columns:minmax(0,1fr) auto;
   gap:.35rem 1.5rem;
   align-items:baseline;
-  padding:1.15rem 0;
+  padding:1.5rem 1.25rem;
   text-decoration:none;
+  border-radius:8px;
+  transition:all .2s ease;
+  margin:-1.5rem -1.25rem;
 }
-.work a:hover .work__name{color:var(--violet);}
+.work li:hover .work a{margin:0;}
+.work a:hover .work__name{
+  color:var(--violet);
+  transform:translateX(6px);
+}
 .work__name{
   font-family:var(--display);
   font-weight:600;
   font-size:1.35rem;
   letter-spacing:-.02em;
-  transition:color .18s ease;
+  transition:color .18s ease,transform .18s ease;
 }
 .work__meta{
   grid-column:1/-1;
   max-width:60ch;
   color:var(--muted);
   font-size:.95rem;
+  line-height:1.5;
 }
 .work__tags{
   font-family:var(--mono);
   font-size:.75rem;
-  color:var(--muted);
+  color:var(--moss);
   white-space:nowrap;
+  font-weight:500;
+  opacity:.8;
+  transition:opacity .2s ease;
 }
+.work a:hover .work__tags{opacity:1;}
 @media (max-width:600px){
-  .work a{grid-template-columns:1fr;}
+  .work a{
+    grid-template-columns:1fr;
+    padding:1.25rem;
+    margin:-1.25rem;
+  }
   .work__tags{white-space:normal;}
 }
 
@@ -203,19 +270,31 @@ img{max-width:100%;display:block;}
   gap:1.5rem;
   margin:0;
 }
-.stats div{border-left:2px solid var(--violet);padding-left:.9rem;}
-.stats dt{font-family:var(--mono);font-size:.75rem;color:var(--muted);}
+.stats div{
+  border-left:3px solid var(--violet);
+  padding-left:.9rem;
+  transition:border-color .2s ease;
+}
+.stats div:hover{border-left-color:var(--moss);}
+.stats dt{
+  font-family:var(--mono);
+  font-size:.75rem;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
 .stats dd{
   font-family:var(--display);
   font-weight:600;
   font-size:2rem;
   letter-spacing:-.03em;
   margin:.1rem 0 0;
+  color:var(--violet);
 }
 
 /* ---------- footer ---------- */
 .foot{
-  border-top:1px solid var(--rule);
+  border-top:2px solid var(--rule);
   padding-block:2rem 3.5rem;
   font-family:var(--mono);
   font-size:.8125rem;
@@ -228,6 +307,7 @@ img{max-width:100%;display:block;}
 
 @media (prefers-reduced-motion:reduce){
   .grid i{animation:none;opacity:1;transform:none;}
+  .masthead__eyebrow b{animation:none;}
   *{transition-duration:.01ms !important;}
 }
 </style>
@@ -255,7 +335,7 @@ img{max-width:100%;display:block;}
     <h2>Elsewhere</h2>
     <ul>
       <li><a href="https://github.com/isaacmuchunu">GitHub <span>@isaacmuchunu</span></a></li>
-      <li><a href="https://linkedin.com/in/isaac-muchunu">LinkedIn <span>/in/isaac-muchunu</span></a></li>
+      <li><a href="https://linkedin.com/in/isaac-muchunu-87995311b">LinkedIn <span>/isaac-muchunu</span></a></li>
       <li><a href="mailto:isaacmuchunu@gmail.com">Email <span>isaacmuchunu@gmail.com</span></a></li>
     </ul>
 
@@ -271,8 +351,8 @@ img{max-width:100%;display:block;}
   <div>
     <section class="block">
       <h2>About</h2>
-      <p>I'm a full-stack developer passionate about building impactful applications in healthcare technology and enterprise systems. With expertise spanning frontend, backend, and DevOps, I focus on creating scalable, maintainable solutions that make a real difference.</p>
-      <p>I enjoy working with modern tech stacks, collaborating across teams, and tackling complex problems from user experience to system architecture. When I'm not coding, I'm exploring cybersecurity concepts and AI/ML applications.</p>
+      <p>I'm a full-stack developer passionate about building impactful applications in healthcare technology and enterprise systems. With expertise spanning frontend, backend, and DevOps, I focus on creating scalable solutions that make a real difference.</p>
+      <p>I enjoy working with modern tech stacks, collaborating across teams, and tackling complex problems from user experience to system architecture. When I'm not coding, I'm exploring cybersecurity, automation, and emerging technologies.</p>
     </section>
 
     <section class="block">
@@ -282,7 +362,7 @@ img{max-width:100%;display:block;}
           <a href="https://github.com/isaacmuchunu/mediconnect">
             <span class="work__name">MediConnect</span>
             <span class="work__tags">Python · Healthcare · Real-time</span>
-            <span class="work__meta">A production-ready ambulance dispatch and healthcare coordination system. Integrates real-time tracking, provider networks, and intelligent automation for emergency medical services.</span>
+            <span class="work__meta">A production-ready ambulance dispatch and healthcare coordination system. Integrates real-time tracking, provider networks, and intelligent automation for emergency response.</span>
           </a>
         </li>
         <li>
@@ -290,20 +370,6 @@ img{max-width:100%;display:block;}
             <span class="work__name">AgriBio Website</span>
             <span class="work__tags">TypeScript · Modern Web</span>
             <span class="work__meta">Full-featured agricultural biotech platform showcasing responsive design, component architecture, and modern web practices.</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://github.com/isaacmuchunu/public-participate">
-            <span class="work__name">Public Participate</span>
-            <span class="work__tags">Vue · Civic Tech</span>
-            <span class="work__meta">A Kenyan public participation platform enabling citizens to engage with the National Assembly and Senate. Democratizing access to legislative processes.</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://github.com/isaacmuchunu/SaferNET">
-            <span class="work__name">SaferNET</span>
-            <span class="work__tags">PHP · K12 Education</span>
-            <span class="work__meta">School web filtering application designed to protect students and manage network access in educational institutions.</span>
           </a>
         </li>
         <li>
